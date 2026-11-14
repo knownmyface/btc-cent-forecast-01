@@ -24,8 +24,10 @@ function median(xs: number[]): number {
 // same case write byte-identical output.
 function forecast(m: CaseMarket): number {
   if (!Array.isArray(m.prices) || m.prices.length === 0) throw new Error(`market ${m.id} has no prices`);
+  for (const p of m.prices) {
+    if (typeof p !== 'number' || !Number.isFinite(p)) throw new Error(`market ${m.id} holds a non-finite price`);
+  }
   const last = m.prices[m.prices.length - 1] as number;
-  if (typeof last !== 'number' || !Number.isFinite(last)) throw new Error(`market ${m.id}'s last price is not finite`);
   const tail = m.prices.slice(-5);
   return price5(0.75 * last + 0.25 * median(tail));
 }
